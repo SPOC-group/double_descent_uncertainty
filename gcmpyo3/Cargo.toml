@@ -1,0 +1,24 @@
+[package]
+name = "gcmpyo3"
+version = "0.1.0"
+edition = "2021"
+
+[dependencies]
+peroxide = "0.30"
+statrs   = "*"
+optimize = "*"
+ndarray  = "*"
+simplers_optimization = "*"
+argmin   = "*"
+clap = { version = "3.2.20", features = ["derive"] }
+pyo3 = { version = "0.17.1", features = ["extension-module"] }
+optimization = "*"
+roots = "*"
+probability="*"
+
+[lib]
+name = "gcmpyo3"
+crate-type = ["cdylib"]
+
+[profile.release]
+opt-level = 3

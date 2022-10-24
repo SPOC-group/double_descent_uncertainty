@@ -1,4 +1,3 @@
-# double_descent_uncertainty
 Companion repository for the paper "A study of uncertainty quatification in overparametrized high-dimensional models"
 
 ## Prerequisite 

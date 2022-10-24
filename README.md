@@ -1,14 +1,16 @@
-Companion repository for the paper "A study of uncertainty quatification in overparametrized high-dimensional models"
+## Companion repository for the paper "A study of uncertainty quantification in overparametrized high-dimensional models"
 
-## Prerequisite 
+This repository contains the code required to reproduce all the plots in the paper, and produce similar plots with different parameters.
+It containts four parts : 
 
-TODO : List the packages required to run everything 
+- The `gcmpyo3` folder contains the library that computes the state evolution equation for the different estimators. Run `install.sh` to compile the library and generate the Python bindings.
 
-Running the experiments requires the package `gcmpyo3` to be installed. Since it is made of Python bindings of a Rust library, it requires the rust toolchain and the packages `pyo3` and `maturin` to be installed.
+- The `core` folder containts useful functions (e.g. compute the test error and calibration of the estimators, compute temperature scaling, ...)
 
-## Reproducing the figures
+- The `main.ipynb` produces the plots
 
-The notebook `main.ipynb` can be used to reproduce the figures of the paper, and also produce similar plots in new settings.
-To compute the optimal penalizations $\lambda_{\rm error}$, $\lambda_{\rm loss}$ and $\lambda_{\rm evidence}$, use the bash script 
-`search_lambda.sh` and modify the parameters. 
+- The script `search_lambda.sh` is used to compute the optimal penalizations $\lambda_{\rm error}$, $\lambda_{\rm loss}$ and $\lambda_{\rm evidence}$ for the ERM and empirical Bayes estimators.
 
+### Prerequisites 
+
+The `environment.yml` file contains the required Python packages. You will also need the Rust toolchain to compile the library.

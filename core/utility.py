@@ -1,15 +1,12 @@
 # utility.py
 # various useful functions
 
-from pickletools import optimize
-from threading import local
-from typing import List
 import numpy as np
-
-from scipy.optimize import minimize_scalar, root_scalar
-from scipy.special import erfc
 from scipy.integrate import quad
-import scipy.stats as stats
+from scipy.optimize  import minimize_scalar, root_scalar
+from scipy.special   import erfc
+import scipy.stats   as stats
+
 import gcmpyo3
 
 # FUNCTION OF THE LOGIT MODEL 

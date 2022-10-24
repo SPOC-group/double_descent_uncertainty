@@ -1,0 +1,14 @@
+name: uncertainty_env
+channels:
+  - conda-forge
+  - defaults
+dependencies:
+  - python=3.9.13
+  - maturin
+  - matplotlib
+  - numpy
+  - pandas
+  - scipy
+  - tqdm
+  - ipykernel
+

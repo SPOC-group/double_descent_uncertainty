@@ -1,7 +1,6 @@
 import scipy.optimize
 import numpy as np
 
-# Probleme quand on lance d'un notebook, on doit importer de core.utility puisque le chemin jusqu'a ce dossier n'est pas connu
 try:
     import utility
 except:

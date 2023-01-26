@@ -9,7 +9,7 @@ It containts four parts :
 
 - The `main.ipynb` produces the plots
 
-- The script `search_lambda.sh` is used to compute the optimal penalizations $\lambda_{\rm error}$, $\lambda_{\rm loss}$ and $\lambda_{\rm evidence}$ for the ERM and empirical Bayes estimators.
+- The script `search_lambda.sh` is used to compute the optimal penalizations $\lambda_{\rm error}$, $\lambda_{\rm loss}$ and $\lambda_{\rm evidence}$ for the ERM and empirical Bayes estimators. The `data` folder already contains csv files with the optimal $\lambda$
 
 ### Prerequisites 
 

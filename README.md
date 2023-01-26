@@ -9,7 +9,7 @@ It containts four parts :
 
 - The `main.ipynb` produces the theoretical curves using the state evolution equations described in the main part of the paper.
 
-- The `experiments` folder contains one notebook for each estimator (bayes optimal, erm, pseudo-Bayes)
+- The `experiments` folder contains one notebook that compute the empirics for each estimator (bayes optimal, erm, pseudo-Bayes), and checks that the overlaps (m, q, etc.) are in agreement with the theoretical predictions.
 
 ## Prerequisites 
 

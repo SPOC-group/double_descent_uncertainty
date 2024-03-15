@@ -12,11 +12,10 @@ from core import utility
 
 # NOTE : n = samples, p = parameters = dimension of student, d = dimension of teacher
 
-def empirical_bayes_compute_optimal_lambda_for_evidence(n_over_p, p_over_d, noise_std, matching, student_activation, rho = 1.0, lambda_min = 1e-3, lambda_max = 10.0):
+def empirical_bayes_compute_optimal_lambda_for_evidence(n_over_p, p_over_d, noise_std, matching, student_activation, rho = 1.0, lambda_min = 1e-3, lambda_max = 10.0, data_model = "logit"):
     """
     student_activation : only useful is matching is False
     """
-    data_model         = "logit"
     student_activation = student_activation if (not matching) else 'matching'
     se_tolerance       = 1e-4
     # the value of beta does not matter
@@ -39,10 +38,9 @@ def empirical_bayes_compute_optimal_lambda_for_evidence(n_over_p, p_over_d, nois
     lambda_opt = opt_res.x
     return lambda_opt
 
-def empirical_bayes_compute_optimal_lambda_for_error(n_over_p, p_over_d, noise_std, matching, student_activation, rho = 1.0, lambda_min = 1e-3, lambda_max = 10.0):
+def empirical_bayes_compute_optimal_lambda_for_error(n_over_p, p_over_d, noise_std, matching, student_activation, rho = 1.0, lambda_min = 1e-3, lambda_max = 10.0, data_model = "logit"):
     se_tolerance = 1e-4
     beta         = 1.0
-    data_model   = "logit"
 
     if matching:
         def to_minimize(lambda_):
@@ -64,8 +62,7 @@ def empirical_bayes_compute_optimal_lambda_for_error(n_over_p, p_over_d, noise_s
 
 ##### FONCTIONS POUR ERM #####
 
-def erm_compute_optimal_lambda_for_error(n_over_p, noise_std, p_over_d, student_activation, lambda_min, lambda_max, se_tolerance, matching, rho):    
-    data_model = "logit"
+def erm_compute_optimal_lambda_for_error(n_over_p, noise_std, p_over_d, student_activation, lambda_min, lambda_max, se_tolerance, matching, rho, data_model = "logit"):
     xatol = 1e-4
 
     if matching:
@@ -86,23 +83,25 @@ def erm_compute_optimal_lambda_for_error(n_over_p, noise_std, p_over_d, student_
     lambda_opt = opt_res.x
     return lambda_opt
 
-def erm_compute_optimal_lambda_for_loss(n_over_p, noise_std, p_over_d, student_activation, lambda_min, lambda_max, se_tolerance, matching, rho):
-    data_model = "logit"
+def erm_compute_optimal_lambda_for_loss(n_over_p, noise_std, p_over_d, student_activation, lambda_min, lambda_max, se_tolerance, matching, rho, data_model = "logit"):
     xatol      = 1e-4
 
+    loss_function_0 = utility.generalisation_loss_logit_teacher if data_model == "logit" else utility.generalisation_loss_probit_teacher
+
     if matching:
-        loss_function = lambda rho, m, q: utility.generalisation_loss_logit_teacher(rho, m, q, 0.0, noise_std**2)
         def to_minimize(lambda_):
             m, q, _, _, _, _ = gcmpyo3.state_evolution.erm_state_evolution_matching(n_over_p, noise_std**2, lambda_, rho, data_model, se_tolerance, False, False)
-            return loss_function(rho, m, q)
+            # last argument is teacher variance
+            return loss_function_0(rho, m, q, noise_std**2)
 
     else:
         _, kappa1, kappastar = utility.KERNEL_COEFICIENTS[student_activation]
         additional_variance  = utility.get_additional_noise_from_kappas(kappa1, kappastar, p_over_d)
-        loss_function = lambda rho, m, q : utility.generalisation_loss_logit_teacher(rho * (1.0 - additional_variance), m, q, 0.0, noise_std**2 + rho * additional_variance)
+        # last argument is teacher variance
+        loss_function = lambda rho, m, q : loss_function_0(rho * (1.0 - additional_variance), m, q, 0.0, noise_std**2 + rho * additional_variance)
 
         def to_minimize(lambda_):
-            m, q, _, _, _, _ = gcmpyo3.state_evolution.erm_state_evolution_gcm(n_over_p, noise_std**2, p_over_d, kappa1, kappastar, lambda_, rho, "logit", se_tolerance, False)
+            m, q, _, _, _, _ = gcmpyo3.state_evolution.erm_state_evolution_gcm(n_over_p, noise_std**2, p_over_d, kappa1, kappastar, lambda_, rho, data_model, se_tolerance, False)
             return loss_function(rho, m, q)
 
     opt_res = optimize.minimize_scalar(lambda lambda_ : to_minimize(lambda_),

@@ -183,7 +183,7 @@ def exact_average_logistic_inverse(p, V):
 
 ## 
 
-def generalisation_error_probit_teacher(rho, m, q, sigma):
+def generalisation_error_probit_teacher(rho, m, q, sigma = 0.0):
     return 1. / np.pi * np.arccos(m / (np.sqrt(q * (rho + sigma**2))))
 
 def generalisation_error_logit_teacher(rho, m, q, sigma = 0.0):

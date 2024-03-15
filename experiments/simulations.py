@@ -55,6 +55,7 @@ def erm_trial(d, n_over_d, inv_alpha_range, lambda_list, kappa1, kappastar, nois
     for inv_alpha, lambda_ in tqdm(zip(inv_alpha_range, lambda_list)):
         gamma = n_over_d * inv_alpha
         n = int(n_over_d * d)
+        
         # student_dim 
         p     = int(gamma * d)
         
